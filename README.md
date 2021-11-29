@@ -47,7 +47,7 @@ Throwing simply `(tHead,` into a training set isn't _great_, there's unresolved
 tension for the user because tuples usually close. So here we'd like to combine
 the two "words" into one token, `(tHead, tTail)`.
 
-We'd need a stack machine to keep track of opens vs closes on parens, braces,
+We'd need push-down automata to keep track of opens vs closes on parens, braces,
 and other "symmetric punctuation". But if we assume that the corpus is code that
 compiles, we can offload that to the compiler and just count matching opens and
 closes until we zero out.
