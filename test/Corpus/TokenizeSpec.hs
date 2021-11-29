@@ -63,6 +63,12 @@ spec = do
       `shouldBe`
       (mkToken "foo(", [mkToken "<<bar", mkToken ">>=", mkToken "baz"])
 
+    it "doesn't create tokens longer than 20ch" $ do
+      -- this is more or less a test of @isClosed@
+      fusePrefix (mkToken "foo(") [mkToken "bar", mkToken "::", mkToken "baz-is-a-very-long-token)"]
+      `shouldBe`
+      (mkToken "foo(", [mkToken "bar", mkToken "::", mkToken "baz-is-a-very-long-token)"])
+
   describe "tokenizing a line" $ do
     it "returns an empty list on an empty line" $ do
       tokenize "" `shouldBe` []

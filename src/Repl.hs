@@ -1,7 +1,7 @@
 module Repl where
 
 import Data.Text
-import Prelude hiding (elem, takeWhile, words)
+import Prelude hiding (elem, length, takeWhile, words)
 
 data Token = Token 
   { text :: Text
@@ -34,6 +34,7 @@ catTokens (Token lhs _ _ _ _) (Token rhs _ _ _ _) = mkToken (lhs <> " " <> rhs)
 
 isClosed :: Token -> Bool
 isClosed = \case
+  Token t _ _ _ _ | 20 < length t -> False
   Token _ 0 0 0 0 -> True
   _ -> False
 
