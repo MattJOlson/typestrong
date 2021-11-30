@@ -71,10 +71,15 @@ spec = do
 
   describe "tokenizing a line" $ do
     it "returns an empty list on an empty line" $ do
-      tokenize "" `shouldBe` []
+      tokenizeLine "" `shouldBe` []
 
     it "returns a single token if only one is present" $ do
-      tokenize "foo" `shouldBe` [mkToken "foo"]
+      tokenizeLine "foo" `shouldBe` [mkToken "foo"]
 
     it "returns many tokens, grouping punctuation, on a full line" $ do
-      tokenize "spec :: Spec" `shouldBe` [mkToken "spec", mkToken "::", mkToken "Spec"]
+      tokenizeLine "spec :: Spec" `shouldBe` [mkToken "spec", mkToken "::", mkToken "Spec"]
+
+    it "groups tokens together by paren sum" $ do
+      tokenizeLine "foo( bar baz) >>= [quux, xyzzy]"
+      `shouldBe`
+      [mkToken "foo( bar baz)", mkToken ">>=", mkToken "[quux, xyzzy]"]

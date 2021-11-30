@@ -1,7 +1,7 @@
 module Repl where
 
 import Data.Text
-import Prelude hiding (elem, length, takeWhile, words)
+import Prelude hiding (elem, length, lines, takeWhile, words)
 
 data Token = Token 
   { text :: Text
@@ -46,5 +46,17 @@ fusePrefix tHead tTail = case tTail of
                       then fusePrefix (catTokens tHead t) ts
                       else (tHead, tTail)
 
-tokenize :: Text -> [Token]
-tokenize t = mkToken <$> words t
+fuseLine :: [Token] -> [Token]
+fuseLine tokens = fst $ fuseRestOfLine ([], tokens)
+  where
+    fuseRestOfLine :: ([Token], [Token]) -> ([Token], [Token])
+    fuseRestOfLine (fused, []) = (fused, [])
+    fuseRestOfLine (fused, u:us) = fuseRestOfLine (fused ++ [prefix], suffix)
+      where
+        (prefix, suffix) = fusePrefix u us
+
+tokenizeLine :: Text -> [Token]
+tokenizeLine t = fuseLine $ mkToken <$> words t
+
+tokenizeCorpus :: Text -> [Token]
+tokenizeCorpus t = mconcat $ tokenizeLine <$> lines t
