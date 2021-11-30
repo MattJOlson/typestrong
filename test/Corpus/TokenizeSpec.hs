@@ -3,7 +3,7 @@ module Corpus.TokenizeSpec where
 import Data.Text
 import Test.Hspec
 
-import Repl
+import Corpus.Tokenize
 
 spec :: Spec
 spec = do
